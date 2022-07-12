@@ -29,7 +29,7 @@ public class Postagem {
 
 	// define que o campo de id vai ser auto-increment
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	// NotNull indica o titulo como um campo obrigatório
 	@NotNull
@@ -49,11 +49,11 @@ public class Postagem {
 	@JsonIgnoreProperties("postagem")
 	private Tema tema;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
