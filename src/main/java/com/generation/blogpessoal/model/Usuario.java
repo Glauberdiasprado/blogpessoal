@@ -17,7 +17,7 @@ public class Usuario {
  
  @Id 
  @GeneratedValue(strategy = GenerationType.IDENTITY) 
- private long id; 
+ private Long id; 
   
  @NotNull 
  @Size(min = 2, max = 100) 
@@ -29,18 +29,25 @@ public class Usuario {
  private String usuario; 
   
  @NotNull 
- @Size(min = 8, max = 16) 
+ @Size(min = 8) 
  private String senha; 
  
- public Usuario(long l, String string, String string2, String string3, String string4) { 
-  // TODO Auto-generated constructor stub 
- } 
+ public Usuario(Long id, String nome, String usuario, String senha) {
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.senha = senha;
+		
+	}
+
+	public Usuario() {	}
+
  
- public long getId() { 
+ public Long getId() { 
   return id; 
  } 
  
- public void setId(long id) { 
+ public void setId(Long id) { 
   this.id = id; 
  } 
  
