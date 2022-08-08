@@ -21,7 +21,7 @@ import com.generation.blogpessoal.repository.PostagemRepository;
 //inidica para o Spring que essa classe vai ser uma classe controladora
 @RestController
 @RequestMapping("/postagens")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostagemController {
 
 	@Autowired
