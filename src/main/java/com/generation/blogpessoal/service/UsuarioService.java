@@ -5,10 +5,8 @@ import java.util.Optional;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.blogpessoal.model.UserLogin;
 import com.generation.blogpessoal.model.Usuario;
@@ -44,7 +42,7 @@ public class UsuarioService {
 		return encoder.matches(senhaDigitada, senhaBanco);
 
 	}
-
+	
 	private String gerarBasicToken(String usuario, String senha) {
 
 		String token = usuario + ":" + senha;
@@ -58,61 +56,19 @@ public class UsuarioService {
 		Optional<Usuario> usuario = usuarioRepository.findByUsuario(userLogin.get().getUsuario());
 
 		if (usuario.isPresent()) {
-			if (compararSenhas(userLogin.get().getSenha(), usuario.get().getSenha())) {
+			if(compararSenhas(userLogin.get().getSenha(), usuario.get().getSenha())) {
 				userLogin.get().setId(usuario.get().getId());
 				userLogin.get().setNome(usuario.get().getNome());
 				userLogin.get().setFoto(usuario.get().getFoto());
 				userLogin.get().setToken(gerarBasicToken(userLogin.get().getUsuario(), userLogin.get().getSenha()));
 				userLogin.get().setSenha(usuario.get().getSenha());
-
+			
+				
 				return userLogin;
 			}
-
+			
 		}
 		return Optional.empty();
-	}
-
-	public Optional<UserLogin> autenticarUsuario(Optional<UserLogin> usuarioLogin) {
-
-		Optional<Usuario> usuario = usuarioRepository.findByUsuario(usuarioLogin.get().getUsuario());
-
-		if (usuario.isPresent()) {
-
-			if (compararSenhas(usuarioLogin.get().getSenha(), usuario.get().getSenha())) {
-
-				usuarioLogin.get().setId(usuario.get().getId());
-				usuarioLogin.get().setNome(usuario.get().getNome());
-				//usuarioLogin.get().setFoto(usuario.get().getFoto());
-				usuarioLogin.get()
-						.setToken(gerarBasicToken(usuarioLogin.get().getUsuario(), usuarioLogin.get().getSenha()));
-				usuarioLogin.get().setSenha(usuario.get().getSenha());
-
-				return usuarioLogin;
-
-			}
-		}
-
-		return Optional.empty();
-
-	}
-
-	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
-
-		if (usuarioRepository.findById(usuario.getId()).isPresent()) {
-
-			Optional<Usuario> buscaUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
-
-			if ((buscaUsuario.isPresent()) && (buscaUsuario.get().getId() != usuario.getId()))
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
-
-			usuario.setSenha(criptografarSenha(usuario.getSenha()));
-
-			return Optional.ofNullable(usuarioRepository.save(usuario));
-
-		}
-
-		return Optional.empty();
-
 	}
 
 }
